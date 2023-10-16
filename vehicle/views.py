@@ -6,6 +6,7 @@ from rest_framework.viewsets import ModelViewSet
 
 from vehicle.models import Car, Moto, Milage
 from vehicle.permissions import IsOwnerOrStaff
+from vehicle.paginators import CarMotoPaginator
 from vehicle.serializers import CarSerializer, MotoSerializer, MilageSerializer, MotoMilageSerializer, \
     MotoCreateSerializer
 
@@ -14,6 +15,7 @@ class CarAPIViewSet(ModelViewSet):
     serializer_class = CarSerializer
     queryset = Car.objects.all()
     permission_classes = [IsAuthenticated, IsOwnerOrStaff]
+    pagination_class = CarMotoPaginator
 
     def perform_create(self, serializer):
         new_car = serializer.save()
@@ -36,6 +38,7 @@ class MotoListAPIView(ListAPIView):
     serializer_class = MotoSerializer
     queryset = Moto.objects.all()
     permission_classes = [IsAuthenticated]
+    pagination_class = CarMotoPaginator
 
 
 class MotoDetailAPIView(RetrieveAPIView):
@@ -70,3 +73,4 @@ class MotoMilageListAPIView(ListAPIView):
     queryset = Milage.objects.filter(moto__isnull=False)
     serializer_class = MotoMilageSerializer
     permission_classes = [IsAuthenticated]
+    pagination_class = CarMotoPaginator

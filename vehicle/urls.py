@@ -6,10 +6,6 @@ from vehicle.views import (CarAPIViewSet, MotoCreateAPIView, MotoListAPIView, Mo
                            MotoDeleteAPIView, MilageAPIViewSet, MotoMilageListAPIView)
 
 app_name = VehicleConfig.name
-"""
-    Для мотоцикла и для машины реализовать возможность добавления пробега.
-Шаги решения
-    Описать маршрутизацию."""
 
 
 router = DefaultRouter()
