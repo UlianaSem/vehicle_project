@@ -1,6 +1,7 @@
 from rest_framework.serializers import ModelSerializer, SerializerMethodField, UniqueTogetherValidator
 
 from vehicle.models import Car, Moto, Milage
+from vehicle.services import convert_rub
 from vehicle.validators import NameValidator
 
 
@@ -30,6 +31,7 @@ class CarSerializer(ModelSerializer):
 
 class MotoSerializer(ModelSerializer):
     last_milage = SerializerMethodField()
+    usd_price = SerializerMethodField()
 
     class Meta:
         model = Moto
@@ -40,6 +42,9 @@ class MotoSerializer(ModelSerializer):
             return instance.milage.all().first().distance
 
         return 0
+
+    def get_usd_price(self, instance):
+        return convert_rub(instance.price)
 
 
 class MotoMilageSerializer(ModelSerializer):
