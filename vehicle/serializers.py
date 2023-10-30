@@ -14,7 +14,7 @@ class MilageSerializer(ModelSerializer):
 
 class CarSerializer(ModelSerializer):
     last_milage = SerializerMethodField()
-    milage = MilageSerializer(source='milage_set', many=True)
+    milage = MilageSerializer(many=True)
 
     class Meta:
         model = Car
@@ -23,8 +23,8 @@ class CarSerializer(ModelSerializer):
                       UniqueTogetherValidator(queryset=Car.objects.all(), fields=['name', "owner"])]
 
     def get_last_milage(self, instance):
-        if instance.milage_set.all().first():
-            return instance.milage_set.all().first().distance
+        if instance.milage.all().first():
+            return instance.milage.all().first().distance
 
         return 0
 
