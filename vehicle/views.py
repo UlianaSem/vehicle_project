@@ -9,6 +9,7 @@ from vehicle.permissions import IsOwnerOrStaff
 from vehicle.paginators import CarMotoPaginator
 from vehicle.serializers import CarSerializer, MotoSerializer, MilageSerializer, MotoMilageSerializer, \
     MotoCreateSerializer
+from vehicle.tasks import check_milage
 
 
 class CarAPIViewSet(ModelViewSet):
@@ -67,6 +68,15 @@ class MilageAPIViewSet(ModelViewSet):
     filter_backends = (DjangoFilterBackend, OrderingFilter)
     filterset_fields = ('car', 'moto', )
     ordering_fields = ('year', )
+
+    def perform_create(self, serializer):
+        new_milage = serializer.save()
+
+        if new_milage.car:
+            check_milage.delay(new_milage.car_id, "Car")
+
+        else:
+            check_milage.delay(new_milage.moto_id, "Moto")
 
 
 class MotoMilageListAPIView(ListAPIView):
