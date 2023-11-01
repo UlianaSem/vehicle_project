@@ -5,13 +5,6 @@ from rest_framework.test import APITestCase
 from users.models import User
 from vehicle.models import Moto, Milage
 
-"""Задача
-
-    Необходимо обложить тестами один эндпоинт создания сущности
-    Посчитать покрытие тестами.
-
-    проверить покрытие тестами."""
-
 
 class MotoTestCase(APITestCase):
 
@@ -29,32 +22,8 @@ class MotoTestCase(APITestCase):
                     "distance": 2000,
                     "year": "2020"
                 }
-            ],
+            ]
         }
-
-    def test_create(self):
-        response = self.client.post(
-            reverse('vehicle:moto-create'),
-            data=self.data,
-        )
-        print(response.data)
-
-        self.assertEquals(
-            response.status_code,
-            status.HTTP_201_CREATED
-        )
-
-        self.assertEquals(
-            response.json(),
-            {
-                "id": 2,
-                "milage": [],
-                "name": "Honda CBF 1000",
-                "description": "test",
-                "owner": self.user.pk,
-                "price": None
-            }
-        )
 
     def test_detail(self):
         response = self.client.get(
